@@ -2,6 +2,12 @@ import time
 import requests
 
 
+def _failure(kind, exc):
+    # Build the failure result while the exception is still in scope.
+    return {"ok": False, "status_code": None, "response_time_ms": None,
+            "location": None, "error_type": kind, "error": type(exc).__name__}
+
+
 def check_http(url: str, timeout: float = 10):
     """Send one GET request. Redirects are NOT followed so we report what the
     server actually answered. Response time is measured with a monotonic timer
@@ -14,12 +20,10 @@ def check_http(url: str, timeout: float = 10):
         return {"ok": True, "status_code": r.status_code, "response_time_ms": ms,
                 "location": r.headers.get("Location"), "error_type": None, "error": None}
     except requests.exceptions.SSLError as e:
-        kind = "ssl"
+        return _failure("ssl", e)
     except requests.exceptions.Timeout as e:
-        kind = "timeout"
+        return _failure("timeout", e)
     except requests.exceptions.ConnectionError as e:
-        kind = "connection"
+        return _failure("connection", e)
     except requests.exceptions.RequestException as e:
-        kind = "other"
-    return {"ok": False, "status_code": None, "response_time_ms": None,
-            "location": None, "error_type": kind, "error": type(e).__name__}
+        return _failure("other", e)

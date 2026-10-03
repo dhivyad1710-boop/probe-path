@@ -92,10 +92,11 @@ cd frontend && npm run dev        # http://localhost:5173 (proxies /api to port 
 
 ## Deployment
 
-- **Backend (Render):** build `pip install -r backend/requirements.txt`, start `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-- **Frontend (Netlify):** base directory `frontend`, build `npm run build`, publish `frontend/dist`. Add `frontend/public/_redirects` containing `/api/*  https://YOUR-BACKEND.onrender.com/api/:splat  200` so Netlify forwards API calls to the backend.
+The whole project deploys to **Netlify**: the React app is the static site, and `netlify/functions/diagnose.mjs` is a serverless function that implements the same checks and rules as the Python backend and serves `POST /api/diagnose`.
 
-The free Render tier sleeps when idle, so the first request can take about 30 seconds.
+- Netlify reads `netlify.toml` (build: `cd frontend && npm install && npm run build`, publish: `frontend/dist`, functions: `netlify/functions`).
+- On the hosted version, private/internal addresses (localhost, 10.x, 192.168.x ...) are blocked to prevent SSRF. Use the Python backend locally to test against `127.0.0.1`.
+- The FastAPI backend in `backend/` is the reference implementation for local use and development.
 
 ## Testing
 
