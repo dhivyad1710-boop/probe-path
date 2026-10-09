@@ -4,12 +4,6 @@
 
 ProbePath is a lightweight IT service troubleshooting tool. Enter a URL and it runs a sequence of basic checks (URL validation, DNS, TCP connection, HTTP request), records the evidence from each step, and produces a rule-based diagnosis with a recommended next action.
 
-**Live demo:** _add your Netlify link here_
-**Backend API:** _add your Render link here_ (`/docs` shows the API)
-
-![ProbePath screenshot](docs/screenshot.png)
-<!-- Take a screenshot of a result (e.g. https://example.com), save it as docs/screenshot.png -->
-
 ## Why I built it
 
 When a website or service "is down", the first support task is working out *where* it fails: DNS, the network path, or the application itself. I built ProbePath as a practical utility around that basic first-line support workflow, and to practise Python, REST APIs, HTTP and networking fundamentals.
